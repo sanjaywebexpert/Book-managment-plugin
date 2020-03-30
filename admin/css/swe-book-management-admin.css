@@ -1,0 +1,12 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+ 
+.form-control.error {
+    border: 1px solid red;
+}
+
+.error {
+    color:red;
+}
