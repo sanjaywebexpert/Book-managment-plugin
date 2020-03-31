@@ -21,19 +21,58 @@
 	  </h5>
     <!--Card content-->
     <div class="card-body" >
-		<form class="border border-light" action="javascript:void(0)" name="add_book" id="add_booklist" style="color: #757575;">
+	
+	<form class="border border-light" action="javascript:void(0)" name="add_book" id="add_booklist" style="color: #757575;">
 		
+	 <!-- Grid row -->
+	  <div class="form-group row">
+		<!-- Material input -->
+		<label for="booktitle" class="col-sm-2 col-form-label">Select Book Self:</label>
+		<div class="col-sm-10">
+		  <div class="md-form mt-0">
+			 <select name="book_self_id" class="form-control" required="">
+				<option value="">Select Book Self</option>
+				<?php 
+				foreach($book_shelf_data as $shelf_data){ ?>
+					<option value="<?=$shelf_data->id?>"><?=strtoupper($shelf_data->shelf_name)?></option>
+				<?php }
+				?>
+			 </select>
+		  </div>
+		</div>
+	  </div>
 		 <!-- Grid row -->
 	  <div class="form-group row">
 		<!-- Material input -->
 		<label for="booktitle" class="col-sm-2 col-form-label">Book Title:</label>
 		<div class="col-sm-10">
 		  <div class="md-form mt-0">
-			<input type="text" class="form-control" name="book_title" id="bootk_title" required="">
+			<input type="text" class="form-control" name="book_title" id="book_title" required="">
 		  </div>
 		</div>
 	  </div>
 	  
+	   <!-- Grid row -->
+	  <div class="form-group row">
+		<!-- Material input -->
+		<label for="booktitle" class="col-sm-2 col-form-label">Book Price:</label>
+		<div class="col-sm-10">
+		  <div class="md-form mt-0">
+			<input type="number" class="form-control" name="book_price" id="book_price" required="">
+		  </div>
+		</div>
+	  </div>
+	  
+	   <!-- Grid row -->
+	  <div class="form-group row">
+		<!-- Material input -->
+		<label for="booktitle" class="col-sm-2 col-form-label">Book Description:</label>
+		<div class="col-sm-10">
+		  <div class="md-form mt-0">
+			<textarea class="form-control" name="book_description" id="book_description" required=""></textarea>
+		  </div>
+		</div>
+	  </div>
 	  		 <!-- Grid row -->
 	  <div class="form-group row">
 		<!-- Material input -->
@@ -47,24 +86,42 @@
 		</div>
 	  </div>
 	  
+	  		 <!-- Grid row -->
 	  <div class="form-group row">
 		<!-- Material input -->
-		<label for="Cover" class="col-sm-2 col-form-label">Book type</label>
+		<label for="booktitle" class="col-sm-2 col-form-label">Language:</label>
 		<div class="col-sm-10">
 		  <div class="md-form mt-0">
-			<div class="form-check">
-		   <?php $level_array = array('entertainment', 'novel', 'biograpgy', 'education', 'sports');
-			foreach($level_array as $level){
-				?>
-				<label><input type="checkbox" name="book_type[]" class="form-control" value="<?php echo $level ?>"><?php echo ucfirst($level); ?></label>
-			<?php }
-		   ?>
-		   </div>
+			<input type="text" class="form-control" name="language" id="language" required="">
 		  </div>
 		</div>
 	  </div>
+		 <!-- Grid row -->
+		<div class="form-group row">
+		<!-- Material input -->
+			<label for="booktitle" class="col-sm-2 col-form-label">Publish Date:</label>
+			<div class="col-sm-10">
+				<div class="md-form mt-0">
+					<input type="date" class="form-control" name="publish_date" id="publish_date" required="">
+				</div>
+			</div>
+		</div> 
 		
-		  <button type="submit" class="btn btn-outline-info btn-rounded my-4 waves-effect z-depth-0">Submit</button>
+			  <!-- Grid row -->
+		<div class="form-group row">
+		<!-- Material input -->
+			<label for="booktitle" class="col-sm-2 col-form-label">Status:</label>
+			<div class="col-sm-10">
+				<div class="md-form mt-0">
+					<select class="form-control" name="status">
+						<option value="1">Active</option>
+						<option value="0">Inactive</option>
+					</select>
+				</div>
+			</div>
+		</div> 
+		
+		  <button type="submit" class="btn btn-info btn-rounded my-4 waves-effect z-depth-0">Submit</button>
 		</form>
 	</div>
   </div>

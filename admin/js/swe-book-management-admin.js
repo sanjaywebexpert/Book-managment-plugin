@@ -30,12 +30,6 @@
 	 */
 	jQuery('#example').DataTable();
 	 
-	jQuery("#add_booklist").validate({
-        submitHandler: function () {
-            // go and save this info
-            
-        }
-    });
 	
 	jQuery("#media-upload").click(function(){
 		var image = wp.media({
@@ -46,7 +40,7 @@
 			//var files = image.state().get("selection");
             var jsonFiles = files.toJSON();
             jQuery("#media-image").attr("src", jsonFiles.url);
-            jQuery("#image-url").val(jsonFiles.url);
+            jQuery("#cover_image").val(jsonFiles.url);
 			if(jsonFiles.url!=""){
 		    jQuery("#show_cover_image").attr("src", jsonFiles.url);
 			jQuery("#show_cover_image").show();
@@ -61,6 +55,7 @@
 	
 	// Create Book Self Js
 	var ajaxurl = create_book_self.ajaxurl;
+	
 	jQuery("#add_book_self_frm").validate({
 		submitHandler: function () {
 		var	postdata = jQuery("#add_book_self_frm").serialize();
@@ -83,10 +78,11 @@
 	// Delete Book Self
 	jQuery(".btn-delete").click(function(){
 			var delete_id = jQuery(this).attr("data-id");
+			var delete_item_type = jQuery(this).attr("data-item");
 			var confirm_val = confirm("Are you sure, want to delete !");
 			if(confirm_val == true ){
-			var postdata = "book_self_id="+delete_id;
-			postdata += "&action=admin_ajax_request&param=delete_book_self";	
+			var postdata = "delete_id="+delete_id;
+			postdata += "&action=admin_ajax_request&param=delete_"+delete_item_type;	
 				jQuery.post(ajaxurl, postdata, function(response){
 					var data = jQuery.parseJSON(response);
 					if(data.status ==1){
@@ -99,9 +95,29 @@
 					} 
 				});				
 			}else{
-				alert("Not done");
+				
 			}
 			
+	});
+
+
+	// Add Book Self
+	jQuery("#add_booklist").validate({
+		submitHandler: function () {
+		var	postdata = jQuery("#add_booklist").serialize();
+		postdata += "&action=admin_ajax_request&param=create_book";
+		jQuery.post(ajaxurl, postdata, function(response){
+			var data = jQuery.parseJSON(response);
+				 if(data.status ==1){
+					alert(data.message);
+					setTimeout(function(){
+						location.reload()
+					}, 300);
+				}else{
+					alert(data.message);
+				}
+			});	
+		}
 	});
 	
 })( jQuery );

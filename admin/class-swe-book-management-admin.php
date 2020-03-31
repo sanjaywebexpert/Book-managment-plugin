@@ -137,6 +137,8 @@ class Swe_Book_Management_Admin {
 		echo $template_content;
 	}
 	function book_list_page_func(){
+		global $wpdb;
+		$book_data = $wpdb->get_results("SELECT * FROM ".$this->table_activator->wp_tbl_books()." ");
 		ob_start();
 		include_once(SWE_BOOK_MANAGEMENT_PLUGIN_DIR .'/admin/partials/swe-book-management-admin-book-list.php'); 
 		$template_content = ob_get_contents();
@@ -144,6 +146,8 @@ class Swe_Book_Management_Admin {
 		echo $template_content;
 	}
 	function add_book_page_func(){
+		global $wpdb;
+		$book_shelf_data = $wpdb->get_results("SELECT id, shelf_name FROM ".$this->table_activator->wp_tbl_book_shelf()." ");
 		ob_start();
 		include_once(SWE_BOOK_MANAGEMENT_PLUGIN_DIR .'/admin/partials/swe-book-management-admin-add-book.php'); 
 		$template_content = ob_get_contents();
@@ -159,9 +163,7 @@ class Swe_Book_Management_Admin {
 	}
 	function book_self_list_page_func(){
 		global $wpdb;
-		
 		$book_list_data = $wpdb->get_results("SELECT * FROM ".$this->table_activator->wp_tbl_book_shelf()." ");
-		
 		ob_start();
 		include_once(SWE_BOOK_MANAGEMENT_PLUGIN_DIR .'/admin/partials/swe-book-management-admin-self-list.php'); 
 		$template_content = ob_get_contents();
@@ -198,20 +200,55 @@ class Swe_Book_Management_Admin {
 						"message" =>"failed to create Book Self!",
 					));
 				} 
-			}elseif($param == "delete_book_self"){
-			    $book_self_id = isset( $_REQUEST['book_self_id']) ? $_REQUEST['book_self_id'] : "";
-				$result = $wpdb->delete($this->table_activator->wp_tbl_book_shelf(), array('id' => $book_self_id), array( '%d' ));
+			}elseif($param == "delete_book_self" || $param == "delete_books"){
+				if($param == "delete_book_self"){
+					$table = $this->table_activator->wp_tbl_book_shelf();
+				}elseif($param == "delete_books"){
+					$table = $this->table_activator->wp_tbl_books();
+				}
+			    $delete_id = isset( $_REQUEST['delete_id']) ? $_REQUEST['delete_id'] : "";
+				$result = $wpdb->delete($table, array('id' => $delete_id), array( '%d' ));
 				 if($result > 0){
 					echo json_encode(array(
 						"status" =>1,
-						"message" =>"Book Self Deleted successful",
+						"message" =>"Item Deleted successful",
 					));
 				}else{
 					echo json_encode(array(
 						"status" =>0,
-						"message" =>"failed to Delete Book Self!",
+						"message" =>"failed to Delete Item!",
 					));
 				}
+			}elseif($param == "create_book"){
+				$book_self_id = isset( $_REQUEST['book_self_id']) ? $_REQUEST['book_self_id'] : "";
+				$book_title = isset( $_REQUEST['book_title']) ? $_REQUEST['book_title'] : "";
+				$book_price = isset( $_REQUEST['book_price']) ? $_REQUEST['book_price'] : "";
+				$book_description = isset( $_REQUEST['book_description']) ? $_REQUEST['book_description'] : "";
+				$cover_image_url = isset( $_REQUEST['cover_image_url']) ? $_REQUEST['cover_image_url'] : "";
+				$language = isset( $_REQUEST['language']) ? $_REQUEST['language'] : "";
+				$publish_date = isset( $_REQUEST['publish_date']) ? $_REQUEST['publish_date'] : "";
+				$status = isset( $_REQUEST['status']) ? $_REQUEST['status'] : "";
+				$wpdb->insert($this->table_activator->wp_tbl_books(), array(
+					"shelf_id" =>$book_self_id ,
+					"book_title" =>$book_title,
+					"book_price" =>$book_price,
+					"book_description" =>$book_description,
+					"book_cover_image" =>$cover_image_url,
+					"language" =>$language,
+					"status" =>$status,
+					"publish_date" =>$publish_date,
+				));
+				if($wpdb->insert_id > 0){
+					echo json_encode(array(
+						"status" =>1,
+						"message" =>"Book created successful",
+					));
+				}else{
+					echo json_encode(array(
+						"status" =>0,
+						"message" =>"failed to create Book!",
+					));
+				} 
 			}
 		}
 		die();

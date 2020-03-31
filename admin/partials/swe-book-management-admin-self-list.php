@@ -37,7 +37,7 @@
 			foreach($book_list_data as $index => $book_val){
 	     ?>
 			<tr>
-				<td><?php echo $index+1; ?>, <?php echo $book_val->id; ?></td>
+				<td><?php echo $index+1; ?></td>
                 <td><?php echo $book_val->shelf_name; ?></td>
                 <td><?php echo $book_val->capacity; ?></td>
                 <td><?php echo $book_val->shelf_location; ?></td>
@@ -49,7 +49,7 @@
 					}
 				?>
 				</td>
-                <td><button class="btn btn-warning btn-edit" data-id="<?php echo $book_val->id; ?>">Edit</button>   <button class="btn btn-danger btn-delete" data-id="<?php echo $book_val->id; ?>">delete</button></td>
+                <td><a href="edit-book?book_id=<?php echo $book_val->id; ?>" class="btn btn-warning btn-edit" >Edit</a>   <button class="btn btn-danger btn-delete" data-item="book_self" data-id="<?php echo $book_val->id; ?>">delete</button></td>
             </tr>
 	     <?php  
 			}
